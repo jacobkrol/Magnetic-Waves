@@ -7,7 +7,7 @@ from matplotlib import pyplot
 # Analytical Solution
 x, nu, t = sympy.symbols('x nu t')
 phi = (sympy.exp(-(x - 4 * t) ** 2 / (4 * nu * (t + 1))) +
-       sympy.exp(-(x - 4 * t - 2 * numpy.pi) ** 2 / (4 * nu * (t + 1))))
+        sympy.exp(-(x - 4 * t - 2 * numpy.pi) ** 2 / (4 * nu * (t + 1))))
 
 phiprime = phi.diff(x)
 u = -2 * nu * (phiprime / phi) + 4
