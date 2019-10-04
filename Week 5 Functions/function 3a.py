@@ -1,15 +1,3 @@
-'''
-======================
-3D surface (color map)
-======================
-
-Demonstrates plotting a 3D surface colored with the coolwarm color map.
-The surface is made opaque by using antialiased=False.
-
-Also demonstrates using the LinearLocator and custom formatting for the
-z axis tick labels.
-'''
-
 from mpl_toolkits.mplot3d import Axes3D
 import matplotlib.pyplot as plt
 from matplotlib import cm
@@ -21,15 +9,11 @@ fig = plt.figure()
 ax = fig.gca(projection='3d')
 
 # Make data.
-# X = np.arange(-5, 5, 0.25)
-# Y = np.arange(-5, 5, 0.25)
 X = np.arange(0,6.28, 0.1)
 T = np.arange(0,5,0.1)
 X, T = np.meshgrid(X, T)
-# R = np.sqrt(X**2 + T**2)
-# Z = np.sin(R)
-k = 1
-w = 1
+k = 5
+w = 5
 Z = np.sin(k*X + w*T)
 
 # Plot the surface.
@@ -41,7 +25,9 @@ ax.set_zlim(-1.01, 1.01)
 ax.zaxis.set_major_locator(LinearLocator(10))
 ax.zaxis.set_major_formatter(FormatStrFormatter('%.02f'))
 
-# Add a color bar which maps values to colors.
-fig.colorbar(surf, shrink=0.5, aspect=5)
+# Add axis labels
+ax.set_xlabel('x axis')
+ax.set_ylabel('t axis')
+ax.set_zlabel('f(t,x) axis')
 
 plt.show()
