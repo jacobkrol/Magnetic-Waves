@@ -2,9 +2,9 @@
 
 ## Notes
 
-`function 1.py` is built on top of a demo of 3D plotting from the [matplotlib website](https://matplotlib.org/mpl-toolkits/mplot3d/tutorial.html). We adapted the independent variable ranges to be equivalent contributing components of a 2D x-variable vector and replaced the z-axis function with the function 1 expressed below. We additionally removed the colorscale and added axes labels.
+`function 1.py` is built on top of a demo of 3D plotting from the [matplotlib website](https://matplotlib.org/mpl_toolkits/mplot3d/tutorial.html). We adapted the independent variable ranges to be equivalent contributing components of a 2D x-variable vector and replaced the z-axis function with the function 1 expressed below. We additionally removed the colorscale and added axes labels.
 
-`function 3a.py` is built on top of a demo of 3D plotting from the [matplotlib website](https://matplotlib.org/mpl-toolkits/mplot3d/tutorial.html). We adapted the demo in the same way as previously stated in `function 1.py`.
+`function 3a.py` is built on top of a demo of 3D plotting from the [matplotlib website](https://matplotlib.org/mpl_toolkits/mplot3d/tutorial.html). We adapted the demo in the same way as previously stated in `function 1.py`.
 
 `function 3b.py` is now deprecated, only maintained for highlighting. This program has code only functional in Sage Math, a language built on top of Python.
 
