@@ -1,0 +1,59 @@
+<html>
+
+    <head>
+        <title>Interactive Animation</title>
+        <link rel="stylesheet" href="styles.css" />
+        <script type="text/javascript" src="jquery-3.3.1.js"></script>
+        <script type="text/javascript" src="js-main.js"></script>
+    </head>
+    <body>
+        <fieldset><legend>Options:</legend>
+            <div class="var-container">
+                <div class="var-label-container">
+                    <span class="var-label">k = </span><span id="k-range-output"></span>
+                </div>
+                <input type="range" min="1" max="100" value="50" id="k-range-input" />
+            </div>
+
+            <div class="var-container">
+                <div class="var-label-container">
+                    <span class="var-label">w = </span><span id="w-range-output"></span>
+                </div>
+                <input type="range" min="1" max="100" value="50" id="w-range-input" />
+            </div>
+
+            <div class="var-container">
+                <div class="var-label-container">
+                    <span class="var-label">y-min = </span><span id="ymin-range-output"></span>
+                </div>
+                <input type="range" min="-100" max="0" value="-50" id="ymin-range-input" />
+            </div>
+
+            <div class="var-container">
+                <div class="var-label-container">
+                    <span class="var-label">y-max = </span><span id="ymax-range-output"></span>
+                </div>
+                <input type="range" min="0" max="100" value="50" id="ymax-range-input" />
+            </div>
+
+            <div class="var-container">
+                <div class="var-label-container">
+                    <span class="var-label">x-min = </span><span id="xmin-range-output"></span>
+                </div>
+                <input type="range" min="-32" max="0" value="-32" id="xmin-range-input" />
+            </div>
+
+            <div class="var-container">
+                <div class="var-label-container">
+                    <span class="var-label">x-max = </span><span id="xmax-range-output"></span>
+                </div>
+                <input type="range" min="32" max="94" value="63" id="xmax-range-input" />
+            </div>
+
+        </fieldset>
+        <fieldset><legend>Output:</legend>
+            <canvas id="gc" width=600 height=400></canvas>
+        </fieldset>
+    </body>
+
+</html>
