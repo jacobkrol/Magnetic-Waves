@@ -9,6 +9,10 @@ fieldset {
 
 .var-label {
     font-weight: bold;
+    min-width: 50px;
+    margin-right: 10px;
+    display: inline-block;
+    text-align: right;
 }
 
 .var-container {
@@ -17,7 +21,7 @@ fieldset {
 }
 
 .var-label-container {
-    min-width: 100px;
+    min-width: 120px;
 }
 
 input[type=range] {
@@ -31,4 +35,12 @@ input[type=range] {
 
 input[type=range]:hover {
     opacity: 1;
+}
+
+#lock-ratio-container {
+    margin-left: 25px;
+}
+
+#lock-ratio-text {
+    margin-left: 10px;
 }

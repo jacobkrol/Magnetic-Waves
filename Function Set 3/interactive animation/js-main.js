@@ -8,6 +8,8 @@ window.onload = function() {
 
 function setup() {
     console.log("setup");
+
+    //activate live value tracking
     let vars = $('input[type=range]');
     for(let item of vars) {
         let id_in = '#'+item.id,
@@ -18,10 +20,117 @@ function setup() {
         });
     }
 
+    //prevent zero y-axis height
+    $('#ymin-range-input').on('input', () => {
+        if($('#ymax-range-input').val() == 0 && $('#ymin-range-input').val() == 0) {
+            $('#ymin-range-input').val(-1);
+            $('#ymin-range-output').text($('#ymin-range-input').val()/10);
+        }
+    });
+
+    $('#ymax-range-input').on('input', () => {
+        if($('#ymin-range-input').val() == 0 && $('#ymax-range-input').val() == 0) {
+            $('#ymax-range-input').val(1);
+            $('#ymax-range-output').text($('#ymax-range-input').val()/10);
+        }
+    });
+
+    //modify xstep labels
+    switch($('#xstep-range-input').val()) {
+        case '1':
+            $('#xstep-text-output').text('Poor');
+            break;
+        case '2':
+            $('#xstep-text-output').text('Good');
+            break;
+        case '3':
+            $('#xstep-text-output').text('Better');
+            break;
+        case '4':
+            $('#xstep-text-output').text('Great');
+            break;
+        default:
+            console.log($('#xstep-range-input').val());
+            break;
+    }
+    $('#xstep-range-input').on('input', () => {
+        switch($('#xstep-range-input').val()) {
+            case '1':
+                $('#xstep-text-output').text('Poor');
+                break;
+            case '2':
+                $('#xstep-text-output').text('Good');
+                break;
+            case '3':
+                $('#xstep-text-output').text('Better');
+                break;
+            case '4':
+                $('#xstep-text-output').text('Great');
+                break;
+            default:
+                console.log($('#xstep-range-input').val());
+                break;
+        }
+    });
+
+    //change_omega_status();
+
+
+
+    //define global plot size
     plot = {
-        width: canv.width*0.9,
-        height: canv.height*0.9
+        width: canv.width-50,
+        height: canv.height-50,
+        t: 0,
+        tstep: 0.1,
+        tmax: 5,
+        tstart: performance.now(),
+        tscale: 1/1500,
+        w: $('#w-range-input').val()/10
     };
+}
+
+function change_omega_status() {
+    //change omega status
+    $('#w-range-input').val($('#b0-range-input').val()*$('#k-range-input').val()/10);
+    $('#w-range-output').text($('#w-range-input').val()/10);
+    $('#w-range-input')[0].disabled = true;
+    $('#w-range-input').css('opacity',0.2);
+
+    $('#lock-ratio').on('click', () => {
+        if($('#lock-ratio')[0].checked) {
+            update_omega();
+            $('#w-range-input')[0].disabled = true;
+            $('#w-range-input').css('opacity',0.2);
+        } else {
+            let w = plot.w > 10 ? 10 : plot.w;
+            $('#w-range-input').val(Math.round(w)*10);
+            $('#w-range-input')[0].disabled = false;
+            $('#w-range-input').css('opacity',0.7);
+            $('#w-range-input').on('input', () => {
+                update_omega();
+            });
+        }
+    });
+
+    //update omega regularly
+    $('#k-range-input').on('input', () => {
+        if($('#lock-ratio')[0].checked) {
+            update_omega();
+        }
+    });
+    $('#b0-range-input').on('input', () => {
+        if($('#lock-ratio')[0].checked) {
+            update_omega();
+        }
+    });
+}
+
+function update_omega() {
+    let val = $('#b0-range-input').val()*$('#k-range-input').val()/10;
+    if(val <= 100) $('#w-range-input').val(val);
+    plot.w = Math.round(val*10)/100;
+    $('#w-range-output').text(plot.w);
 }
 
 function line(x1,y1,x2,y2) {
@@ -117,6 +226,15 @@ function draw_tick_marks() {
         ycur += tickstep;
     }
 
+    //add y-axis tick labels
+
+    ctx.font = 'bold 10pt Arial';
+    ctx.fillStyle = 'black';
+    ctx.textAlign = 'end';
+    for(let yval of yticks) {
+        ctx.fillText(yval.toString(),yaxisval-8,canv.height-top-(yval-ymin)*yscale+4);
+    }
+
 
 }
 
@@ -131,18 +249,100 @@ function clear_background() {
     ctx.fillRect(0,0,canv.width,canv.height);
 }
 
-function draw() {
-    clear_background();
-    draw_plot_box();
-    draw_axes();
-    draw_tick_marks();
+function compute_plot_points() {
+
+    //define points array
+    let pts = [];
+
+    //determine xstep
+    let xstep;
+    switch($('#xstep-range-input').val()) {
+        case '1':
+            xstep = 0.16;
+            break;
+        case '2':
+            xstep = 0.08;
+            break;
+        case '3':
+            xstep = 0.04;
+            break;
+        case '4':
+            xstep = 0.02;
+            break;
+        default:
+            break;
+    }
+
+    //update t value
+    plot.t = plot.tscale * (performance.now()-plot.tstart);
+    if(plot.t > plot.tmax) {
+        plot.tstart = performance.now();
+        plot.t = 0;
+    }
+
+    //loop through x values
+    for(let x=$('#xmin-range-input').val()/10; x<$('#xmax-range-input').val()/10; x+=xstep) {
+        pts.push({x:x,y:f(x)});
+    }
+
+    return pts;
 }
 
-function compute() {
-    //pass
+function f(x) {
+    const k = $('#k-range-input').val()/10,
+          w = $('#w-range-input').val()/10,
+          a = 4;
+    return a*Math.cos(k*x-w*plot.t);
+}
+
+function draw_plot_points(pts,color) {
+
+    const xmin = $('#xmin-range-input').val()/10,
+          xmax = $('#xmax-range-input').val()/10,
+          ymin = $('#ymin-range-input').val()/10,
+          ymax = $('#ymax-range-input').val()/10,
+          left = (canv.width-plot.width)/2,
+          top = (canv.height-plot.height)/2,
+          xscale = plot.width/(xmax-xmin),
+          yscale = plot.height/(ymax-ymin);
+
+    ctx.strokeStyle = color;
+    ctx.lineWidth = 2;
+    for(let i=0; i<pts.length-1; ++i) {
+        line((pts[i].x-xmin)*xscale+left,canv.height-(pts[i].y-ymin)*yscale-top,
+             (pts[i+1].x-xmin)*xscale+left,canv.height-(pts[i+1].y-ymin)*yscale-top);
+    }
+}
+
+function draw_t_value() {
+    ctx.fillStyle = 'black';
+    ctx.font = 'bold 14pt Arial';
+    ctx.textAlign = 'start';
+    ctx.fillText('t = '+Math.round(plot.t*10)/10,
+                 (canv.width-plot.width)/2+plot.width-80,
+                 (canv.height-plot.height)/2+plot.height-10);
+}
+
+function redraw_margins() {
+    ctx.fillStyle = 'white';
+    //top
+    ctx.fillRect(0,0,canv.width,(canv.height-plot.height)/2);
+    //bottom
+    ctx.fillRect(0,(canv.height-plot.height)/2+plot.height,canv.width,(canv.height-plot.height)/2);
+    //left
+    //ctx.fillRect(0,0,(canv.width-plot.width)/2,canv.height);
+    //right
+    //ctx.fillRect((canv.width-plot.width)/2+plot.width,0,(canv.width-plot.width)/2+plot.width,canv.height);
+    //draw_plot_box();
 }
 
 function main() {
-    draw();
-    compute();
+    clear_background();
+    //draw_plot_box();
+    draw_axes();
+    draw_tick_marks();
+    pts = compute_plot_points();
+    draw_plot_points(pts,'blue');
+    draw_t_value();
+    redraw_margins();
 }
