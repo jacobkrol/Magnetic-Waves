@@ -16,7 +16,7 @@
 
 *where* **k**, **x** are vectors \<k<sub>0</sub>, k<sub>1</sub>\>, \<x<sub>0</sub>, x<sub>1</sub>\>, and **k** is constant.
 
-![Picture failed to load](https://github.com/jacobkrol/Magnetic-Waves/blob/master/Week%205%20Functions/function%201%20graphics/k=(1,1).png?raw=true)
+![Picture failed to load](https://github.com/jacobkrol/Magnetic-Waves/blob/master/Function%20Set%202/function%201%20graphics/k=(1,1).png?raw=true)
 
 2. *f*(*x*) = e<sup>*i*__k__**x**</sup> = *cos*(**k** &sdot; **x**) + *isin*(**k** &sdot; **x**)
 
@@ -28,8 +28,8 @@
 
 a. Plot the given function in the 3D plane, with axes *x*, *t*, and *f*
 
-![Picture failed to load](https://github.com/jacobkrol/Magnetic-Waves/blob/master/Week%205%20Functions/function%203a%20graphics/k=1,%20w=2.png?raw=true)
+![Picture failed to load](https://github.com/jacobkrol/Magnetic-Waves/blob/master/Function%20Set%202/function%203a%20graphics/k=1,%20w=2.png?raw=true)
 
 b. Plot the given function in the 2D plane, with the third dimension presented over time
 
-![Picture failed to load](https://github.com/jacobkrol/Magnetic-Waves/blob/master/Week%205%20Functions/function%203b%20graphics/k=1,%20w=2.gif?raw=true)
+![Picture failed to load](https://github.com/jacobkrol/Magnetic-Waves/blob/master/Function%20Set%202/function%203b%20graphics/k=1,%20w=2.gif?raw=true)
