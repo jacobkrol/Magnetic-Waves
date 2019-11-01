@@ -1,4 +1,6 @@
 import numpy as np
+from sage.plot.plot3d.plot3d import axes
+
 tPoints = np.linspace(0,10,21).tolist() #create list of t values to test
 frames = []
 
@@ -19,16 +21,20 @@ cm = colormaps.jet
 
 def fReal(x0,x1):
     return a1 * cos(k.dot_product(vector([x0,x1])) - w * t)
+    
+def fImag(x0,x1):
+    return a1 * sin(k.dot_product(vector([x0,x1])) - w * t)
 
 def c(x0,x1):
     return (cos(k.dot_product(vector([x0,x1])) - w * t) + 1) / 2
 
-f = text3d('',(0,0,0))
 for t in tPoints:
     #create function graphics object
-    f1 = plot3d(fReal, (_x0min, _x0max), (_x1min, _x1max), color=(c,cm))
-    f1.show()
-    frames.append(f1)
+    f1 = plot3d(fReal, (_x0min, _x0max), (_x1min, _x1max), color='blue')
+    f2 = plot3d(fImag, (_x0min, _x0max), (_x1min, _x1max), color='red')
+    f = f1 + f2
+    f.show(aspect_ratio=1,opacity=0.6)
+    frames.append(f)
 
 #create animation of frames and display to console
 animate(frames).show()
