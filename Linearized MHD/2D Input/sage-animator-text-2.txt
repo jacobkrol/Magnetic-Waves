@@ -1,0 +1,50 @@
+import numpy as np
+from sage.plot.plot3d.plot3d import axes
+
+tPoints = np.linspace(0,10,21).tolist() #create list of t values to test
+frames = []
+
+#define function constants
+a1 = 3
+a2 = 5
+k1 = vector([1,1])
+k2 = vector([2,2])
+b0 = vector([1,0])
+w1 = k1.dot_product(b0)
+w2 = k2.dot_product(b0)
+
+#define window constraints
+_x0min = -2*pi
+_x0max = 2*pi
+_x1min = -2*pi
+_x1max = 2*pi
+cm = colormaps.jet
+
+def f1Real(x0,x1):
+    return a1 * cos(k1.dot_product(vector([x0,x1])) - w1 * t)
+    
+def f1Imag(x0,x1):
+    return a1 * sin(k1.dot_product(vector([x0,x1])) - w1 * t)
+
+def f2Real(x0,x1):
+    return a1 * cos(k2.dot_product(vector([x0,x1])) - w2 * t)
+    
+def f2Imag(x0,x1):
+    return a1 * sin(k2.dot_product(vector([x0,x1])) - w2 * t)
+
+def c1(x0,x1):
+    return (cos(k1.dot_product(vector([x0,x1])) - w1 * t) + 1) / 2
+
+def c2(x0,x1):
+    return (cos(k2.dot_product(vector([x0,x1])) - w2 * t) + 1) / 2
+
+for t in tPoints:
+    #create function graphics object
+    f1r = plot3d(f1Real, (_x0min, _x0max), (_x1min, _x1max), color='blue')
+    f1i = plot3d(f1Imag, (_x0min, _x0max), (_x1min, _x1max), color='red')
+    f = f1r + f1i
+    f.show(aspect_ratio=1,opacity=0.6)
+    frames.append(f)
+
+#create animation of frames and display to console
+animate(frames).show()
