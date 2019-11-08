@@ -8,7 +8,7 @@ frames = []
 a1 = 3
 a2 = 5
 k1 = vector([1,1])
-k2 = vector([2,2])
+k2 = vector([2,-1])
 b0 = vector([1,0])
 w1 = k1.dot_product(b0)
 w2 = k2.dot_product(b0)
@@ -41,8 +41,8 @@ def c2(x0,x1):
 for t in tPoints:
     #create function graphics object
     f1r = plot3d(f1Real, (_x0min, _x0max), (_x1min, _x1max), color='blue')
-    f1i = plot3d(f1Imag, (_x0min, _x0max), (_x1min, _x1max), color='red')
-    f = f1r + f1i
+    f2r = plot3d(f2Real, (_x0min, _x0max), (_x1min, _x1max), color='green')
+    f = f1r + f2r
     f.show(aspect_ratio=1,opacity=0.6)
     frames.append(f)
 
